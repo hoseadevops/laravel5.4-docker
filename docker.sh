@@ -38,7 +38,7 @@ cat <<EOF
 EOF
 }
 
-ALL_COMMANDS="init clean clean_all new_egg download_code pull_code build_code_config run_mysql stop_mysql restart_mysql to_mysql delete_mysql "
+ALL_COMMANDS="init clean clean_all new_egg download_code pull_code build_code_config run_mysql rm_mysql restart_mysql to_mysql delete_mysql "
 list_contains ALL_COMMANDS "$action" || action=help
 $action "$@"
 

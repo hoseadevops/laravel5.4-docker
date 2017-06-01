@@ -3,7 +3,7 @@ set -e
 
 mysql_image=mysql:5.7
 mysql_container=$app-mysql5.7
-project_docker_mysql_path=$project_docker_path/mysql
+project_docker_mysql_path="$project_docker_path/mysql"
 
 mysql_data_dir="$project_docker_mysql_path/data"
 mysql_data_init_dir="$project_docker_mysql_path/mysql-init"
