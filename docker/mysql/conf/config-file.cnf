@@ -1,0 +1,34 @@
+# Example MySQL config file for medium systems.
+#
+# This is for a system with little memory (32M - 64M) where MySQL plays
+# an important part, or systems up to 128M where MySQL is used together with
+# other programs (such as a web server)
+#
+# MySQL programs look for option files in a set of
+# locations which depend on the deployment platform.
+# You can copy this option file to one of those
+# locations. For information about these locations, see:
+# http://dev.mysql.com/doc/mysql/en/option-files.html
+#
+# In this file, you can use all long options that a program supports.
+# If you want to know which options a program supports, run the program
+# with the "--help" option.
+
+# The following options will be passed to all MySQL clients
+[client]
+# password    = root
+# port        = 3306
+
+# The MySQL server
+[mysqld]
+skip-external-locking
+key_buffer_size = 16M
+max_allowed_packet = 1M
+table_open_cache = 64
+sort_buffer_size = 512K
+net_buffer_length = 8K
+read_buffer_size = 256K
+read_rnd_buffer_size = 512K
+myisam_sort_buffer_size = 8M
+bind_address=*
+sql-mode=""
