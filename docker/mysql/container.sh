@@ -57,7 +57,7 @@ function to_mysql()
 function _run_mysql_command_in_client()
 {
     local cmd=$1
-    run_cmd "docker exec -i $(_open_tty) $mysql_container bash -c 'cd $project_path; $cmd'"
+    run_cmd "docker exec -it $mysql_container bash -c 'cd $project_path; $cmd'"
 }
 
 function _wait_mysql()
