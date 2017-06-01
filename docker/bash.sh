@@ -41,3 +41,33 @@ function rm_container()
     run_cmd "$cmd"
 }
 
+#--------------------------------------------
+# 列出包含的命令
+#
+# demo: rm_container "container_name"
+#--------------------------------------------
+function list_contains()
+{
+    local var="$1"
+    local str="$2"
+    local val
+
+    eval "val=\" \${$var} \""
+    [ "${val%% $str *}" != "$val" ]
+}
+
+#--------------------------------------------
+#变量扩展 默认值类用法
+#   ${parameter-word} 若parameter变量未定义，则扩展为word。
+#   ${parameter:-word} 若parameter变量未定义或为空，则扩展为word。
+#--------------------------------------------
+
+action=${1:-help}
+if [ "$action" = 'init' ]; then
+    if [ $# -lt 1 ]; then
+        echo "Usage sh $0 init";
+        exit 1
+    fi
+    init
+    exit 0
+fi
