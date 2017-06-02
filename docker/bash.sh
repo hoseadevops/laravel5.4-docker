@@ -56,6 +56,33 @@ function list_contains()
 }
 
 #--------------------------------------------
+# 模板变量替换 生成新文件
+#
+#--------------------------------------------
+function render_local_config()
+{
+    local config_key=$1
+    local template_file=$2
+    local config_file=$3
+    local out=$4
+
+    shift
+    shift
+    shift
+    shift
+
+    local config_type=yaml
+    cmd="curl -s -F 'template_file=@$template_file' -F 'config_file=@$config_file' -F 'config_key=$config_key' -F 'config_type=$config_type'"
+    for kv in $*
+    do
+        cmd="$cmd -F 'kv_list[]=$kv'"
+    done
+    cmd="$cmd $CONFIG_SERVER/render-config > $out"
+    run_cmd "$cmd"
+    head $out && echo
+}
+
+#--------------------------------------------
 # 变量扩展 默认值类用法
 #
 # ${parameter-word} 若parameter变量未定义，则扩展为word。
