@@ -1,5 +1,5 @@
 #!/bin/bash
 env > /tmp/crontab.env
-chmod +x crontab/crontab
-crontab crontab/crontab
+chmod +x docker/crontab/crontab
+crontab docker/crontab/crontab
 cron -f &
