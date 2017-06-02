@@ -19,6 +19,7 @@ source $project_docker_path/bash.sh
 
 source $project_docker_path/mysql/container.sh
 
+source $project_docker_path/php/container.sh
 
 help() {
 cat <<EOF
