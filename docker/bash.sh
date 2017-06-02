@@ -19,7 +19,7 @@ function run_cmd()
 #--------------------------------------------
 # 递归创建目录
 #
-# demo： recursive_mkdir "/opt/data/hexing"
+# demo： recursive_mkdir "/opt/data/hosea"
 #--------------------------------------------
 function recursive_mkdir()
 {
@@ -44,7 +44,6 @@ function rm_container()
 #--------------------------------------------
 # 列出包含的命令
 #
-# demo: rm_container "container_name"
 #--------------------------------------------
 function list_contains()
 {
@@ -57,9 +56,10 @@ function list_contains()
 }
 
 #--------------------------------------------
-#变量扩展 默认值类用法
-#   ${parameter-word} 若parameter变量未定义，则扩展为word。
-#   ${parameter:-word} 若parameter变量未定义或为空，则扩展为word。
+# 变量扩展 默认值类用法
+#
+# ${parameter-word} 若parameter变量未定义，则扩展为word。
+# ${parameter:-word} 若parameter变量未定义或为空，则扩展为word。
 #--------------------------------------------
 
 action=${1:-help}

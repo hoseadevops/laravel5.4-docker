@@ -10,7 +10,10 @@ developer_name=$('whoami')
 app_basic_name="laravel"
 app="$developer_name-$app_basic_name"
 
-env=local
+#----------
+#dev test prod
+#----------
+env=dev
 
 source $project_docker_path/bash.sh
 
@@ -29,6 +32,9 @@ cat <<EOF
         clean
         clean_all
 
+
+        build_php
+
         run_mysql
         rm_mysql
         restart_mysql
@@ -38,7 +44,7 @@ cat <<EOF
 EOF
 }
 
-ALL_COMMANDS="init clean clean_all new_egg download_code pull_code build_code_config run_mysql rm_mysql restart_mysql to_mysql delete_mysql "
+ALL_COMMANDS="init clean clean_all new_egg download_code pull_code build_code_config run_mysql rm_mysql restart_mysql to_mysql delete_mysql build_php"
 list_contains ALL_COMMANDS "$action" || action=help
 $action "$@"
 
