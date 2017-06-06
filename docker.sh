@@ -25,9 +25,6 @@ source $project_docker_path/syslog-ng/container.sh
 
 source $project_docker_path/mysql/container.sh
 
-#----------------------
-# 依赖 busybox、redis
-#----------------------
 source $project_docker_path/php/container.sh
 
 help()
@@ -67,12 +64,18 @@ cat <<EOF
         to_php
         _run_cmd_php_container
 
+        run_nginx
+        stop_nginx
+        restart_nginx
+
+        updateHost www.baidu.com 127.0.0.1
+
         help  show this message
 EOF
 
 }
 
-ALL_COMMANDS="init clean clean_all new_egg download_code pull_code build_code_config run_mysql rm_mysql restart_mysql to_mysql delete_mysql build_php run_php to_php rm_php _run_cmd_php_container run_redis to_redis rm_redis restart_redis rm_busybox run_busybox run_syslogng rm_syslogng restart_syslogng"
+ALL_COMMANDS="updateHost init clean clean_all new_egg download_code pull_code build_code_config run_nginx stop_nginx restart_nginx run_mysql rm_mysql restart_mysql to_mysql delete_mysql build_php run_php to_php rm_php _run_cmd_php_container run_redis to_redis rm_redis restart_redis rm_busybox run_busybox run_syslogng rm_syslogng restart_syslogng"
 list_contains ALL_COMMANDS "$action" || action=help
 $action "$@"
 

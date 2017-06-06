@@ -56,6 +56,36 @@ function list_contains()
 }
 
 #--------------------------------------------
+# 修改host
+# sh docker.sh updateHost www.baidu.com 127.0.0.1
+#--------------------------------------------
+function updateHost()
+{
+    local in_url="$2"
+    local in_ip="$3"
+
+    # 域名下的IP
+    inner_host=`cat /etc/hosts | grep ${in_url} | awk '{print $1}'`
+    if [[ ${inner_host} = ${in_ip} ]];
+    then
+        echo "${inner_host}  ${in_url} ok, do nothing."
+    else
+        # 替换 http://man.linuxde.net/sed
+        # sudo sed -i "" "s/${inner_host:='updateHost'}/${in_ip}/g" /etc/hosts
+
+        inner_ip_map="${in_ip} ${in_url}"
+        # sudo 只能作用于echo 操作符仍然 >> 需要权限 sh -c 可以让sudu 命令作用于整个语句
+        sudo sh -c "echo ${inner_ip_map} >> /etc/hosts"
+        # tee -a 追加 等同于 >>
+        # echo ${inner_ip_map}|sudo tee -a /etc/hosts
+
+        if [ $? = 0 ]; then
+           echo "${inner_ip_map} to hosts success host is `cat /etc/hosts`"
+        fi
+    fi
+}
+
+#--------------------------------------------
 # 模板变量替换 生成新文件
 #
 #--------------------------------------------
