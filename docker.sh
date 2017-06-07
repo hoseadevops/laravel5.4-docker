@@ -18,9 +18,9 @@ source $project_docker_path/bash.sh
 
 source $project_docker_path/busybox/container.sh
 
-source $project_docker_path/redis/container.sh
-
 source $project_docker_path/syslog-ng/container.sh
+
+source $project_docker_path/redis/container.sh
 
 source $project_docker_path/mysql/container.sh
 
