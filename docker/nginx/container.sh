@@ -7,7 +7,8 @@ nginx_container_fpm=$app-nginx-fpm
 project_docker_nginx_dir="$project_docker_path/nginx"
 project_docker_runtime_dir="$project_docker_path/runtime"
 
-function run_nginx_fpm() {
+function run_nginx_fpm()
+{
 
     local nginx_log_path="$project_docker_runtime_dir/nginx-fpm"
     recursive_mkdir "$nginx_log_path"
@@ -15,7 +16,7 @@ function run_nginx_fpm() {
 
     args="--restart=always"
 
-    args="$args -p 80:80"
+    args="$args -p 8081:80"
 
     # nginx config
     args="$args -v $project_docker_nginx_dir/conf/nginx.conf:/etc/nginx/nginx.conf"
@@ -34,4 +35,16 @@ function run_nginx_fpm() {
     args="$args --volumes-from $busybox_container"
 
     run_cmd "docker run -d $args --name $nginx_container_fpm $nginx_image"
+}
+
+
+function rm_nginx()
+{
+    rm_container $nginx_container_fpm
+}
+
+function restart_nginx()
+{
+    rm_nginx
+    run_nginx_fpm
 }
