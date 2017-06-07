@@ -10,9 +10,8 @@ app_basic_name="laravel"
 app="$developer_name-$app_basic_name"
 
 #----------------------
-# dev test prod
+# dev test pre prod
 #----------------------
-
 env=dev
 
 source $project_docker_path/bash.sh

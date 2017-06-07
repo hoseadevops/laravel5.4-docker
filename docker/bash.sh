@@ -28,6 +28,16 @@ function recursive_mkdir()
     fi
 }
 
+#--------------------------------------------
+# 递归创建目录 通过传入的文件地址
+#
+# demo： recursive_mkdir_with_file "/opt/data/hosea/a.txt"
+#--------------------------------------------
+
+function recursive_mkdir_with_file()
+{
+    recursive_mkdir $(dirname $1)
+}
 
 #--------------------------------------------
 # 删除容器
@@ -39,6 +49,31 @@ function rm_container()
     local container_name=$1
     local cmd="docker ps -a -f name='^/$container_name$' | grep '$container_name' | awk '{print \$1}' | xargs -I {} docker rm -f --volumes {}"
     run_cmd "$cmd"
+}
+
+
+#--------------------------------------------
+# 容器是否在运行
+#
+# demo: container_is_running "container_name"
+#--------------------------------------------
+function container_is_running()
+{
+    local container_name=$1
+    local num=$(docker ps -a -f name="^/$container_name$" -q | wc -l)
+    if [ "$num" == "1" ]; then
+        local ret=$(docker inspect -f {{.State.Running}} $1)
+        echo $ret
+    else
+        echo 'false'
+    fi
+}
+
+
+function docker0_ip()
+{
+    local host_ip=$(ip addr show docker0 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | awk '{print $1}' | head  -1)
+    echo $host_ip
 }
 
 #--------------------------------------------
@@ -85,6 +120,12 @@ function updateHost()
     fi
 }
 
+function read_kv_config()
+{
+    local file=$1
+    local key=$2
+    cat $file | grep "$key=" | awk -F '=' '{print $2}'
+}
 #--------------------------------------------
 # 模板变量替换 生成新文件
 #
