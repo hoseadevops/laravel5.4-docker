@@ -39,42 +39,6 @@ function recursive_mkdir_with_file()
     recursive_mkdir $(dirname $1)
 }
 
-#--------------------------------------------
-# 删除容器
-#
-# demo: rm_container "container_name"
-#--------------------------------------------
-function rm_container()
-{
-    local container_name=$1
-    local cmd="docker ps -a -f name='^/$container_name$' | grep '$container_name' | awk '{print \$1}' | xargs -I {} docker rm -f --volumes {}"
-    run_cmd "$cmd"
-}
-
-
-#--------------------------------------------
-# 容器是否在运行
-#
-# demo: container_is_running "container_name"
-#--------------------------------------------
-function container_is_running()
-{
-    local container_name=$1
-    local num=$(docker ps -a -f name="^/$container_name$" -q | wc -l)
-    if [ "$num" == "1" ]; then
-        local ret=$(docker inspect -f {{.State.Running}} $1)
-        echo $ret
-    else
-        echo 'false'
-    fi
-}
-
-
-function docker0_ip()
-{
-    local host_ip=$(ip addr show docker0 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | awk '{print $1}' | head  -1)
-    echo $host_ip
-}
 
 #--------------------------------------------
 # 列出包含的命令
@@ -153,13 +117,76 @@ function render_local_config()
     head $out && echo
 }
 
+
+
+#--------------------------------------------
+# 删除容器
+#
+# demo: rm_container "container_name"
+#--------------------------------------------
+function rm_container()
+{
+    local container_name=$1
+    local cmd="docker ps -a -f name='^/$container_name$' | grep '$container_name' | awk '{print \$1}' | xargs -I {} docker rm -f --volumes {}"
+    run_cmd "$cmd"
+}
+
+
+#--------------------------------------------
+# 容器是否在运行
+#
+# demo: container_is_running "container_name"
+#--------------------------------------------
+function container_is_running()
+{
+    local container_name=$1
+    local num=$(docker ps -a -f name="^/$container_name$" -q | wc -l)
+    if [ "$num" == "1" ]; then
+        local ret=$(docker inspect -f {{.State.Running}} $1)
+        echo $ret
+    else
+        echo 'false'
+    fi
+}
+
+#--------------------------------------------
+# 推送sunfund镜像到自己的仓库
+#
+# demo: push_sunfund_image "image_name"
+#--------------------------------------------
+function push_sunfund_image()
+{
+    local image_name=$2
+    run_cmd "docker tag docker.sunfund.com/$image_name hoseadevops/sunfund-$image_name"
+    run_cmd "docker push hoseadevops/sunfund-$image_name"
+}
+
+#--------------------------------------------
+# 下载sunfund 镜像
+#
+# demo: pull_sunfund_image "image_name"
+#--------------------------------------------
+function pull_sunfund_image()
+{
+    local image_name=$2
+    local url=docker.sunfund.com/$image_name
+    run_cmd "docker pull $url"
+}
+
+
+
+function docker0_ip()
+{
+    local host_ip=$(ip addr show docker0 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | awk '{print $1}' | head  -1)
+    echo $host_ip
+}
+
 #--------------------------------------------
 # 变量扩展 默认值类用法
 #
 # ${parameter-word} 若parameter变量未定义，则扩展为word。
 # ${parameter:-word} 若parameter变量未定义或为空，则扩展为word。
 #--------------------------------------------
-
 action=${1:-help}
 if [ "$action" = 'init' ]; then
     if [ $# -lt 1 ]; then
