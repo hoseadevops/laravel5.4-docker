@@ -23,6 +23,10 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
         && docker-php-ext-install zip \
         && docker-php-ext-install gd \
         && docker-php-ext-install mbstring \
-        && docker-php-ext-install mcrypt
-RUN pecl install memcached-2.2.0 && pecl install redis-2.2.7
+        && docker-php-ext-install mcrypt \
+        && docker-php-ext-install sockets
+
+RUN pecl install binpack RUN pecl install memcached-2.2.0 && pecl install redis-2.2.8
 COPY .bashrc /root/
+
+RUN curl -L https://phar.phpunit.de/phpunit-5.7.phar >> /tmp/phpunit.phar && mv /tmp/phpunit.phar /usr/local/bin/phpunit && chmod a+x /usr/local/bin/phpunit

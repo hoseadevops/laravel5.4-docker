@@ -152,19 +152,20 @@ function container_is_running()
 #--------------------------------------------
 # 推送sunfund镜像到自己的仓库
 #
-# demo: push_sunfund_image "image_name"
+# demo: sh docker.sh push_sunfund_image 9dy-php:5.6.8-fpm
 #--------------------------------------------
 function push_sunfund_image()
 {
     local image_name=$2
-    run_cmd "docker tag docker.sunfund.com/$image_name hoseadevops/sunfund-$image_name"
-    run_cmd "docker push hoseadevops/sunfund-$image_name"
+    local user_image="hoseadevops/sunfund-$image_name"
+    run_cmd "docker tag docker.sunfund.com/$image_name $user_image"
+    run_cmd "docker push $user_image"
 }
 
 #--------------------------------------------
 # 下载sunfund 镜像
 #
-# demo: pull_sunfund_image "image_name"
+# demo: sh docker.sh pull_sunfund_image 9dy-php:5.6.8-fpm
 #--------------------------------------------
 function pull_sunfund_image()
 {
@@ -173,6 +174,18 @@ function pull_sunfund_image()
     run_cmd "docker pull $url"
 }
 
+#--------------------------------------------
+# 推送sunfund镜像到自己的仓库
+#
+# demo: sh docker.sh push_image
+#--------------------------------------------
+function push_image()
+{
+    local image_name=$2
+    local user_image="hoseadevops/own-$image_name"
+    run_cmd "docker tag $image_name $user_image"
+    run_cmd "docker push $user_image"
+}
 
 
 function docker0_ip()
