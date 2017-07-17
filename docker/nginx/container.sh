@@ -38,7 +38,7 @@ function run_nginx_fpm()
 }
 
 
-function rm_nginx()
+function rm_nginx_fpm()
 {
     rm_container $nginx_container_fpm
 }

@@ -12,7 +12,7 @@ developer_name=$('whoami');
 
 app_basic_name=$(read_kv_config .env APP_NAME);
 #----------------------
-# laravel: local testing production pre[后加 预生产]
+# laravel env: local testing production pre[后加 预生产]
 #----------------------
 app_env=$(read_kv_config .env APP_ENV);
 
@@ -29,6 +29,40 @@ source $project_docker_path/mysql/container.sh
 source $project_docker_path/php/container.sh
 
 source $project_docker_path/nginx/container.sh
+
+
+function run()
+{
+    run_syslogng
+    run_busybox
+    run_mysql
+    run_redis
+    build_php
+    run_php
+    run_nginx_fpm
+}
+
+function clean()
+{
+    rm_syslogng
+    rm_busybox
+    rm_mysql
+    rm_redis
+    rm_php
+    rm_nginx
+}
+
+function restart()
+{
+    clean
+    run
+}
+
+function clean_all()
+{
+    clean
+
+}
 
 help()
 {
@@ -64,10 +98,11 @@ cat <<EOF
         run_php
         rm_php
         to_php
+
         _run_cmd_php_container
 
         run_nginx_fpm
-        rm_nginx
+        rm_nginx_fpm
         restart_nginx
 
         updateHost www.baidu.com 127.0.0.1
@@ -82,7 +117,7 @@ cat <<EOF
 EOF
 }
 
-ALL_COMMANDS="push_image push_sunfund_image pull_sunfund_image read_kv_config updateHost init clean clean_all new_egg download_code pull_code build_code_config run_nginx_fpm rm_nginx restart_nginx run_mysql rm_mysql restart_mysql to_mysql delete_mysql build_php run_php to_php rm_php _run_cmd_php_container run_redis to_redis rm_redis restart_redis rm_busybox run_busybox run_syslogng rm_syslogng restart_syslogng"
+ALL_COMMANDS="push_image push_sunfund_image pull_sunfund_image read_kv_config updateHost init clean clean_all new_egg download_code pull_code build_code_config run_nginx_fpm rm_nginx_fpm restart_nginx run_mysql rm_mysql restart_mysql to_mysql delete_mysql build_php run_php to_php rm_php _run_cmd_php_container run_redis to_redis rm_redis restart_redis rm_busybox run_busybox run_syslogng rm_syslogng restart_syslogng"
 list_contains ALL_COMMANDS "$action" || action=help
 $action "$@"
 
