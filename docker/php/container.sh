@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-php_image=hosea-php5.6
+php_image=hoseadevops/sunfund-9dy-php:5.6.8-fpm
 php_container=$app-php5.6
 
 project_docker_php_dir="$project_docker_path/php"

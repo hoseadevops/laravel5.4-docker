@@ -37,7 +37,6 @@ function run()
     run_busybox
     run_mysql
     run_redis
-    build_php
     run_php
     run_nginx_fpm
 }
@@ -49,7 +48,7 @@ function clean()
     rm_mysql
     rm_redis
     rm_php
-    rm_nginx
+    rm_nginx_fpm
 }
 
 function restart()
@@ -75,7 +74,6 @@ cat <<EOF
         stop
         restart
         clean
-        clean_all
 
         run_syslogng
         rm_syslogng
@@ -117,7 +115,7 @@ cat <<EOF
 EOF
 }
 
-ALL_COMMANDS="push_image push_sunfund_image pull_sunfund_image read_kv_config updateHost init clean clean_all new_egg download_code pull_code build_code_config run_nginx_fpm rm_nginx_fpm restart_nginx run_mysql rm_mysql restart_mysql to_mysql delete_mysql build_php run_php to_php rm_php _run_cmd_php_container run_redis to_redis rm_redis restart_redis rm_busybox run_busybox run_syslogng rm_syslogng restart_syslogng"
+ALL_COMMANDS="push_image push_sunfund_image pull_sunfund_image read_kv_config updateHost run clean init clean clean_all new_egg download_code pull_code build_code_config run_nginx_fpm rm_nginx_fpm restart_nginx run_mysql rm_mysql restart_mysql to_mysql delete_mysql build_php run_php to_php rm_php _run_cmd_php_container run_redis to_redis rm_redis restart_redis rm_busybox run_busybox run_syslogng rm_syslogng restart_syslogng"
 list_contains ALL_COMMANDS "$action" || action=help
 $action "$@"
 
