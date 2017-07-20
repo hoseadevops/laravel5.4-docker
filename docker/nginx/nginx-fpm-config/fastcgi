@@ -1,5 +1,5 @@
 location ~* \.(php|html|htm)(.*)$ {
-    fastcgi_pass        hexing-laravel-php5.6:9000;
+    fastcgi_pass        hexing-laravel-php7.1.7:9000;
     fastcgi_index       index.php;
     fastcgi_hide_header X-Powered-By;
     fastcgi_intercept_errors on;

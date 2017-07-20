@@ -30,7 +30,7 @@ function run_nginx_fpm()
     # generated nginx docker sites config
     args="$args -v $nginx_docker_sites_fpm_conf_dir:/etc/nginx/docker-sites"
 
-    args="$args --link $php_container"
+    args="$args --link $php_container_7"
 
     args="$args --volumes-from $busybox_container"
 
@@ -45,6 +45,6 @@ function rm_nginx_fpm()
 
 function restart_nginx()
 {
-    rm_nginx
+    rm_nginx_fpm
     run_nginx_fpm
 }

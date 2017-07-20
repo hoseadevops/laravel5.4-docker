@@ -2,17 +2,26 @@
 set -e
 
 php_image=hoseadevops/sunfund-9dy-php:5.6.8-fpm
+php_image_7=hoseadevops/own-php_image_7
+
 php_container=$app-php5.6
+php_container_7=$app-php7.1.7
 
 project_docker_php_dir="$project_docker_path/php"
 project_docker_runtime_dir="$project_docker_path/runtime"
-project_docker_php_image_dir="$project_docker_path/php/image"
-
+project_docker_php_image_dir="$project_docker_path/php/image5.6.8"
+project_docker_php_image_dir_7="$project_docker_path/php/image7.1.7"
 
 function build_php()
 {
     docker build -t $php_image $project_docker_php_image_dir
 }
+
+function build_php_7()
+{
+    docker build -t  php_image_7 $project_docker_php_image_dir_7
+}
+
 
 function run_php()
 {
@@ -48,11 +57,11 @@ function run_php()
     args="$args --link $redis_container"
 
     local cmd='bash docker.sh _run_cmd_php_container'
-    run_cmd "docker run -d $args -h $php_container --name $php_container $php_image $cmd"
+    run_cmd "docker run -d $args -h $php_container_7 --name $php_container_7 $php_image_7 $cmd"
 }
 
 function rm_php() {
-    rm_container $php_container
+    rm_container $php_container_7
 }
 
 function to_php() {
@@ -62,7 +71,7 @@ function to_php() {
 
 function _send_cmd_to_php_container() {
     local cmd=$1
-    run_cmd "docker exec -it $php_container bash -c '$cmd'"
+    run_cmd "docker exec -it $php_container_7 bash -c '$cmd'"
 }
 
 function _run_cmd_php_container()
