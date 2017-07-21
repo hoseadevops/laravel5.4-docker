@@ -84,7 +84,11 @@ function restart()
 function clean_all()
 {
     clean
-
+    rm -rf "$project_docker_runtime_dir/app"
+    rm -rf "$project_docker_runtime_dir/crontab"
+    rm -rf "$project_docker_runtime_dir/nginx-fpm"
+    rm -rf "$project_docker_runtime_dir/php"
+    rm -rf "$project_docker_runtime_dir/syslog-ng"
 }
 
 help()
