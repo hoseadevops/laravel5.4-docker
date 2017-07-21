@@ -84,11 +84,11 @@ function restart()
 function clean_all()
 {
     clean
-    rm -rf "$project_docker_runtime_dir/app"
-    rm -rf "$project_docker_runtime_dir/crontab"
-    rm -rf "$project_docker_runtime_dir/nginx-fpm"
-    rm -rf "$project_docker_runtime_dir/php"
-    rm -rf "$project_docker_runtime_dir/syslog-ng"
+    run_cmd "rm -rf $project_docker_runtime_dir/app"
+    run_cmd "rm -rf $project_docker_runtime_dir/crontab"
+    run_cmd "rm -rf $project_docker_runtime_dir/nginx-fpm"
+    run_cmd "rm -rf $project_docker_runtime_dir/php"
+    run_cmd "rm -rf $project_docker_runtime_dir/syslog-ng"
 }
 
 help()
@@ -102,6 +102,7 @@ cat <<EOF
         stop
         restart
         clean
+        clean_all
 
         run_syslogng
         rm_syslogng
@@ -145,7 +146,7 @@ cat <<EOF
 EOF
 }
 
-ALL_COMMANDS="restart build_php_7 push_image push_sunfund_image pull_sunfund_image read_kv_config updateHost run clean init clean clean_all new_egg download_code pull_code build_code_config run_nginx_fpm rm_nginx_fpm restart_nginx run_mysql rm_mysql restart_mysql to_mysql delete_mysql build_php run_php to_php rm_php _run_cmd_php_container run_redis to_redis rm_redis restart_redis rm_busybox run_busybox run_syslogng rm_syslogng restart_syslogng"
+ALL_COMMANDS="restart push_image push_sunfund_image pull_sunfund_image read_kv_config updateHost run clean init clean clean_all new_egg download_code pull_code build_code_config run_nginx_fpm rm_nginx_fpm restart_nginx run_mysql rm_mysql restart_mysql to_mysql delete_mysql build_php run_php to_php rm_php _run_cmd_php_container run_redis to_redis rm_redis restart_redis rm_busybox run_busybox run_syslogng rm_syslogng restart_syslogng"
 list_contains ALL_COMMANDS "$action" || action=help
 $action "$@"
 
