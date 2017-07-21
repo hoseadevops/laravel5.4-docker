@@ -33,7 +33,7 @@ function run_php()
 
     args="$args -v $project_docker_runtime_dir/crontab:/var/log/crontab"
 
-    if [ "$env" = 'dev' ]; then
+    if [ "$app_env" = 'local' ]; then
         args="$args -v $project_docker_php_dir/conf/php-dev.ini:/usr/local/etc/php/php.ini"
     else
         args="$args -v $project_docker_php_dir/conf/php-prod.ini:/usr/local/etc/php/php.ini"
