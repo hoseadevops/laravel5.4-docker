@@ -1,12 +1,6 @@
 #!/bin/bash
 set -e
 
-nginx_image=nginx:1.11
-nginx_container_fpm=$app-nginx-fpm
-
-project_docker_nginx_dir="$project_docker_path/nginx"
-project_docker_runtime_dir="$project_docker_path/runtime"
-
 function run_nginx_fpm()
 {
 
@@ -30,7 +24,7 @@ function run_nginx_fpm()
     # generated nginx docker sites config
     args="$args -v $nginx_docker_sites_fpm_conf_dir:/etc/nginx/docker-sites"
 
-    args="$args --link $php_container_7"
+    args="$args --link $php_container"
 
     args="$args --volumes-from $busybox_container"
 

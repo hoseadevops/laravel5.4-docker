@@ -1,11 +1,6 @@
 #!/bin/bash
 set -e
 
-busybox_image=busybox
-busybox_container=$app-busybox
-
-project_docker_busybox_path="$project_docker_path/busybox"
-
 function run_busybox()
 {
     local args=''

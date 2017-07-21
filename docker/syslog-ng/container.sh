@@ -1,12 +1,6 @@
 #!/bin/bash
 set -e
 
-syslogng_image=balabit/syslog-ng
-syslogng_container=$app-syslog-ng
-
-project_docker_syslogng_dir="$project_docker_path/syslog-ng"
-project_docker_runtime_dir="$project_docker_path/runtime"
-
 function run_syslogng()
 {
     local args=''

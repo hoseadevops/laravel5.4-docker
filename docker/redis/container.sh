@@ -1,11 +1,6 @@
 #!/bin/bash
 set -e
 
-redis_image=redis:3.0.1
-redis_container=$app-redis3.0.1
-project_docker_redis_dir="$project_docker_path/redis"
-
-
 function run_redis()
 {
     local args="--restart always"

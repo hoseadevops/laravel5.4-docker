@@ -1,18 +1,13 @@
 #!/bin/bash
 set -e
 
-mysql_image=mysql:5.7
-mysql_container=$app-mysql5.7
-project_docker_mysql_path="$project_docker_path/mysql"
-
-mysql_data_dir="$project_docker_mysql_path/data"
-mysql_data_init_dir="$project_docker_mysql_path/mysql-init"
-mysql_data_append_dir="$project_docker_mysql_path/mysql-append"
-mysql_conf_dir="$project_docker_mysql_path/conf/"
-mysql_port="33062"
-
 function run_mysql()
 {
+    local mysql_data_dir="$project_docker_mysql_path/data"
+    local mysql_data_init_dir="$project_docker_mysql_path/mysql-init"
+    local mysql_data_append_dir="$project_docker_mysql_path/mysql-append"
+    local mysql_conf_dir="$project_docker_mysql_path/conf/"
+
     local args="--restart always"
     # data
     args="$args -v $mysql_data_dir/mysql-data:/var/lib/mysql"

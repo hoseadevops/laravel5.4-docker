@@ -84,15 +84,21 @@ function updateHost()
     fi
 }
 
+#--------------------------------------------
+# 读取 key=value
+#
+# demo: read_kv_config .env APP_NAME
 function read_kv_config()
 {
     local file=$1
     local key=$2
     cat $file | grep "$key=" | awk -F '=' '{print $2}'
 }
+
 #--------------------------------------------
 # 模板变量替换 生成新文件
 #
+# demo: render_local_config $config_key $prj_dir/9douyu-core/.env.example $config_file $prj_dir/9douyu-core/.env
 #--------------------------------------------
 function render_local_config()
 {
@@ -131,6 +137,16 @@ function rm_container()
     run_cmd "$cmd"
 }
 
+#--------------------------------------------
+# 构建容器
+#
+#--------------------------------------------
+function build_image()
+{
+    local docker_image=$1
+    local docker_file_dir=$2
+    docker build -t $docker_image $docker_file_dir
+}
 
 #--------------------------------------------
 # 容器是否在运行
