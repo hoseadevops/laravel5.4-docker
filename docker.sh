@@ -17,13 +17,12 @@ app_env=$(read_kv_config .env APP_ENV);                     # app env laravel en
 app="$developer_name-$app_basic_name"
 project_docker_runtime_dir="$project_docker_path/runtime"   # app runtime
 
-# images
-busybox_image=busybox
-syslogng_image=balabit/syslog-ng
-redis_image=redis:3.0.1
-mysql_image=mysql:5.7
+busybox_image=hoseadevops/own-busybox
+syslogng_image=hoseadevops/own-syslog-ng
+redis_image=hoseadevops/own-redis:3.0.1
+mysql_image=hoseadevops/own-mysql:5.7
 php_image=hoseadevops/own-php:7.1.7-fpm
-nginx_image=nginx:1.11
+nginx_image=hoseadevops/own-nginx:1.11
 
 # container
 busybox_container=$app-busybox

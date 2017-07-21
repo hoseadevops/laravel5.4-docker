@@ -225,3 +225,11 @@ if [ "$action" = 'init' ]; then
     init
     exit 0
 fi
+
+
+#busybox_image=busy
+#syslogng_image=balabit/syslog-ng
+#redis_image=redis:3.0.1
+#mysql_image=mysql:5.7
+#php_image=hoseadevops/own-php:7.1.7-fpm
+#nginx_image=nginx:1.11
