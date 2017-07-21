@@ -11,8 +11,10 @@ developer_name=$('whoami');                                 # 开发者
 # 如果有配置中心 在这里创建 .env
 #----------------------
 
-app_basic_name=$(read_kv_config .env APP_NAME);             # 项目名称 【英文表示】
-app_env=$(read_kv_config .env APP_ENV);                     # app env laravel env: local testing production pre[后加 预生产]
+app_basic_name=$(read_kv_config .env APP_NAME);                 # 项目名称 【英文表示】
+app_env=$(read_kv_config .env APP_ENV);                         # app env laravel env: local testing production pre[后加 预生产]
+mysql_port=$(read_kv_config .env DB_PORT);                      # 数据库端口号 【docker 映射外网端口】
+
 
 app="$developer_name-$app_basic_name"
 project_docker_runtime_dir="$project_docker_path/runtime"   # app runtime
@@ -47,7 +49,6 @@ source $project_docker_path/syslog-ng/container.sh
 #---------- redis container ------------#
 source $project_docker_path/redis/container.sh
 #---------- mysql container ------------#
-mysql_port="33062"
 source $project_docker_path/mysql/container.sh
 #---------- php container ------------#
 source $project_docker_path/php/container.sh
