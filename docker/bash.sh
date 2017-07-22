@@ -211,6 +211,41 @@ function docker0_ip()
 }
 
 #--------------------------------------------
+# 替换模板文件 shell 变量赋值替换 不适合 有$符号的 模板
+#--------------------------------------------
+function replace_template()
+{
+    local config=`cat $1`
+    local template=`cat $2`
+    local out=$3
+
+    printf "$config\ncat << EOF\n$template\nEOF" | bash > $out
+}
+#--------------------------------------------
+# 批量替换配置
+#--------------------------------------------
+function replace_template_key_value()
+{
+    local config=$1
+    local template=$2
+    local out=$3
+
+    cmd="sed '"
+    sub_cmd=""
+    for kv in `cat $config`
+    do
+        key=$(echo $kv| awk -F '=' '{print $1}')
+        val=$(echo $kv| awk -F '=' '{print $2}')
+
+        sub_cmd=$sub_cmd"s|{{ $key }}|$val|g;";
+    done
+    sub_cmd="${sub_cmd%?}'"
+
+    run_cmd "$cmd$sub_cmd $template > $out";
+}
+
+
+#--------------------------------------------
 # 变量扩展 默认值类用法
 #
 # ${parameter-word} 若parameter变量未定义，则扩展为word。

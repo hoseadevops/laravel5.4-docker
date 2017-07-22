@@ -3,10 +3,9 @@ set -e
 
 function run_nginx_fpm()
 {
-
     local nginx_log_path="$project_docker_runtime_dir/nginx-fpm"
     recursive_mkdir "$nginx_log_path"
-    local nginx_docker_sites_fpm_conf_dir="$project_docker_nginx_dir/nginx-fpm-config"
+    local nginx_docker_sites_fpm_conf_dir="$project_docker_persistent_dir/nginx-fpm-config"
 
     args="--restart=always"
 
@@ -42,3 +41,4 @@ function restart_nginx()
     rm_nginx_fpm
     run_nginx_fpm
 }
+

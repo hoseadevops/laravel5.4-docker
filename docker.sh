@@ -17,7 +17,6 @@ mysql_port=$(read_kv_config .env DB_PORT);                      # 数据库端�
 
 
 app="$developer_name-$app_basic_name"
-project_docker_runtime_dir="$project_docker_path/runtime"   # app runtime
 
 busybox_image=hoseadevops/own-busybox
 syslogng_image=hoseadevops/own-syslog-ng
@@ -41,6 +40,8 @@ project_docker_redis_dir="$project_docker_path/redis"
 project_docker_mysql_path="$project_docker_path/mysql"
 project_docker_php_dir="$project_docker_path/php"
 project_docker_nginx_dir="$project_docker_path/nginx"
+project_docker_runtime_dir="$project_docker_path/runtime"           # app runtime
+project_docker_persistent_dir="$project_docker_path/persistent"     # app persistent
 
 #---------- busybox container ------------#
 source $project_docker_path/busybox/container.sh
@@ -55,6 +56,19 @@ source $project_docker_path/php/container.sh
 #---------- nginx container ------------#
 source $project_docker_path/nginx/container.sh
 
+
+function init_app()
+{
+    run_cmd "echo php_container=$php_container > $project_docker_persistent_dir/config"
+    run_cmd "echo php_fpm_port=9000 >> $project_docker_persistent_dir/config"
+    run_cmd "echo dk_nginx_domain=hosea.devops.com >> $project_docker_persistent_dir/config"
+    run_cmd "echo dk_nginx_root=$project_path/public >> $project_docker_persistent_dir/config"
+
+    recursive_mkdir "$project_docker_persistent_dir/nginx-fpm-config"
+
+    run_cmd "replace_template_key_value $project_docker_persistent_dir/config $project_docker_nginx_dir/nginx-fpm-config-template/fastcgi $project_docker_persistent_dir/nginx-fpm-config/fastcgi"
+    run_cmd "replace_template_key_value $project_docker_persistent_dir/config $project_docker_nginx_dir/nginx-fpm-config-template/hosea.conf $project_docker_persistent_dir/nginx-fpm-config/hosea.conf"
+}
 
 function run()
 {
@@ -98,6 +112,8 @@ cat <<EOF
     Usage: sh docker.sh [options]
 
         Valid options are:
+
+        init_app
 
         run
         stop
@@ -147,7 +163,7 @@ cat <<EOF
 EOF
 }
 
-ALL_COMMANDS="restart push_image push_sunfund_image pull_sunfund_image read_kv_config updateHost run clean init clean clean_all new_egg download_code pull_code build_code_config run_nginx_fpm rm_nginx_fpm restart_nginx run_mysql rm_mysql restart_mysql to_mysql delete_mysql build_php run_php to_php rm_php _run_cmd_php_container run_redis to_redis rm_redis restart_redis rm_busybox run_busybox run_syslogng rm_syslogng restart_syslogng"
+ALL_COMMANDS="init_app restart push_image push_sunfund_image pull_sunfund_image read_kv_config updateHost run clean init clean_all new_egg download_code pull_code build_code_config run_nginx_fpm rm_nginx_fpm restart_nginx run_mysql rm_mysql restart_mysql to_mysql delete_mysql build_php run_php to_php rm_php _run_cmd_php_container run_redis to_redis rm_redis restart_redis rm_busybox run_busybox run_syslogng rm_syslogng restart_syslogng"
 list_contains ALL_COMMANDS "$action" || action=help
 $action "$@"
 
