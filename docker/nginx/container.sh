@@ -9,7 +9,7 @@ function run_nginx_fpm()
 
     args="--restart=always"
 
-    args="$args -p 8081:80"
+    args="$args -p $nginx_port:80"
 
     # nginx config
     args="$args -v $project_docker_nginx_dir/conf/nginx.conf:/etc/nginx/nginx.conf"

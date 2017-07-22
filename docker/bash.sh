@@ -252,14 +252,14 @@ function replace_template_key_value()
 # ${parameter:-word} 若parameter变量未定义或为空，则扩展为word。
 #--------------------------------------------
 action=${1:-help}
-if [ "$action" = 'init' ]; then
-    if [ $# -lt 1 ]; then
-        echo "Usage sh $0 init";
-        exit 1
-    fi
-    init
-    exit 0
-fi
+#if [ "$action" = 'init' ]; then
+#    if [ $# -lt 1 ]; then
+#        echo "Usage sh $0 init";
+#        exit 1
+#    fi
+#    init
+#    exit 0
+#fi
 
 
 #busybox_image=busy

@@ -2,19 +2,19 @@
 
 set -e
 
-project_path=$(cd $(dirname $0); pwd -P)                    # 项目目录
-project_docker_path="$project_path/docker"                  # 项目docker目录
-source $project_docker_path/bash.sh                         # 基础函数
-developer_name=$('whoami');                                 # 开发者
+project_path=$(cd $(dirname $0); pwd -P)                            # 项目目录
+project_docker_path="$project_path/docker"                          # 项目docker目录
+source $project_docker_path/bash.sh                                 # 基础函数
+developer_name=$('whoami');                                         # 开发者
 
 #----------------------
 # 如果有配置中心 在这里创建 .env
 #----------------------
 
-app_basic_name=$(read_kv_config .env APP_NAME);                 # 项目名称 【英文表示】
-app_env=$(read_kv_config .env APP_ENV);                         # app env laravel env: local testing production pre[后加 预生产]
-mysql_port=$(read_kv_config .env DB_PORT);                      # 数据库端口号 【docker 映射外网端口】
-
+app_basic_name=$(read_kv_config .env APP_NAME);                     # 项目名称 【英文表示】
+app_env=$(read_kv_config .env APP_ENV);                             # app env laravel env: local testing production pre[后加 预生产]
+mysql_port=$(read_kv_config .env DB_PORT);                          # 数据库端口号 【docker 映射外网端口】
+nginx_port=$(read_kv_config .env NGINX_PORT);                       # nginx端口号 【docker 映射外网端口】
 
 app="$developer_name-$app_basic_name"
 
@@ -43,6 +43,8 @@ project_docker_nginx_dir="$project_docker_path/nginx"
 project_docker_runtime_dir="$project_docker_path/runtime"           # app runtime
 project_docker_persistent_dir="$project_docker_path/persistent"     # app persistent
 
+app_config="$project_docker_persistent_dir/config"
+
 #---------- busybox container ------------#
 source $project_docker_path/busybox/container.sh
 #---------- syslog container ------------#
@@ -56,6 +58,13 @@ source $project_docker_path/php/container.sh
 #---------- nginx container ------------#
 source $project_docker_path/nginx/container.sh
 
+function new_app()
+{
+    init_app
+    init_app
+    clean_all
+    run
+}
 
 function init_app()
 {
@@ -65,6 +74,7 @@ function init_app()
     run_cmd "echo dk_nginx_root=$project_path/public >> $project_docker_persistent_dir/config"
 
     recursive_mkdir "$project_docker_persistent_dir/nginx-fpm-config"
+    recursive_mkdir "$project_docker_persistent_dir/mysql/data"
 
     run_cmd "replace_template_key_value $project_docker_persistent_dir/config $project_docker_nginx_dir/nginx-fpm-config-template/fastcgi $project_docker_persistent_dir/nginx-fpm-config/fastcgi"
     run_cmd "replace_template_key_value $project_docker_persistent_dir/config $project_docker_nginx_dir/nginx-fpm-config-template/hosea.conf $project_docker_persistent_dir/nginx-fpm-config/hosea.conf"
@@ -88,6 +98,7 @@ function clean()
     rm_redis
     rm_php
     rm_nginx_fpm
+    clean_runtime
 }
 
 function restart()
@@ -99,6 +110,11 @@ function restart()
 function clean_all()
 {
     clean
+    clean_persistent
+}
+
+function clean_runtime()
+{
     run_cmd "rm -rf $project_docker_runtime_dir/app"
     run_cmd "rm -rf $project_docker_runtime_dir/crontab"
     run_cmd "rm -rf $project_docker_runtime_dir/nginx-fpm"
@@ -106,15 +122,22 @@ function clean_all()
     run_cmd "rm -rf $project_docker_runtime_dir/syslog-ng"
 }
 
-help()
+function clean_persistent()
+{
+    run_cmd "rm -f $project_docker_persistent_dir/config"
+    run_cmd "rm -rf $project_docker_persistent_dir/mysql"
+    run_cmd "rm -rf $project_docker_persistent_dir/nginx-fpm-config"
+}
+
+function help()
 {
 cat <<EOF
     Usage: sh docker.sh [options]
 
         Valid options are:
 
+        new_app
         init_app
-
         run
         stop
         restart
@@ -163,7 +186,7 @@ cat <<EOF
 EOF
 }
 
-ALL_COMMANDS="init_app restart push_image push_sunfund_image pull_sunfund_image read_kv_config updateHost run clean init clean_all new_egg download_code pull_code build_code_config run_nginx_fpm rm_nginx_fpm restart_nginx run_mysql rm_mysql restart_mysql to_mysql delete_mysql build_php run_php to_php rm_php _run_cmd_php_container run_redis to_redis rm_redis restart_redis rm_busybox run_busybox run_syslogng rm_syslogng restart_syslogng"
+ALL_COMMANDS="new_app init_app restart push_image push_sunfund_image pull_sunfund_image read_kv_config updateHost run clean init clean_all new_egg download_code pull_code build_code_config run_nginx_fpm rm_nginx_fpm restart_nginx run_mysql rm_mysql restart_mysql to_mysql delete_mysql build_php run_php to_php rm_php _run_cmd_php_container run_redis to_redis rm_redis restart_redis rm_busybox run_busybox run_syslogng rm_syslogng restart_syslogng"
 list_contains ALL_COMMANDS "$action" || action=help
 $action "$@"
 

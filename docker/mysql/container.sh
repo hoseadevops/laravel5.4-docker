@@ -3,7 +3,7 @@ set -e
 
 function run_mysql()
 {
-    local mysql_data_dir="$project_docker_mysql_path/data"
+    local mysql_data_dir="$project_docker_persistent_dir/mysql/data"
     local mysql_data_init_dir="$project_docker_mysql_path/mysql-init"
     local mysql_data_append_dir="$project_docker_mysql_path/mysql-append"
     local mysql_conf_dir="$project_docker_mysql_path/conf/"
