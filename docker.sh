@@ -60,9 +60,8 @@ source $project_docker_path/nginx/container.sh
 
 function new_app()
 {
-    init_app
-    init_app
     clean_all
+    init_app
     run
 }
 
