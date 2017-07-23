@@ -85,7 +85,7 @@ function updateHost()
 }
 
 #--------------------------------------------
-# 读取 key=value
+# 读取 文件中 key=value 的value
 #
 # demo: read_kv_config .env APP_NAME
 function read_kv_config()
@@ -96,7 +96,7 @@ function read_kv_config()
 }
 
 #--------------------------------------------
-# 模板变量替换 生成新文件
+# 模板变量替换 生成新文件 适用于配置中心
 #
 # demo: render_local_config $config_key $prj_dir/9douyu-core/.env.example $config_file $prj_dir/9douyu-core/.env
 #--------------------------------------------
@@ -191,7 +191,7 @@ function pull_sunfund_image()
 }
 
 #--------------------------------------------
-# 推送sunfund镜像到自己的仓库
+# 推送本地镜像到自己的仓库
 #
 # demo: sh docker.sh push_image
 #--------------------------------------------
@@ -203,7 +203,9 @@ function push_image()
     run_cmd "docker push $user_image"
 }
 
-
+#--------------------------------------------
+# docker0 ip
+#--------------------------------------------
 function docker0_ip()
 {
     local host_ip=$(ip addr show docker0 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | awk '{print $1}' | head  -1)
@@ -211,7 +213,8 @@ function docker0_ip()
 }
 
 #--------------------------------------------
-# 替换模板文件 shell 变量赋值替换 不适合 有$符号的 模板
+# 通过key=value的配置文件 替换 模板中的 $val 变量; 不适合模板中有$符号的 非替换字符串
+# replace_template config.file template.file out.file
 #--------------------------------------------
 function replace_template()
 {
@@ -222,7 +225,8 @@ function replace_template()
     printf "$config\ncat << EOF\n$template\nEOF" | bash > $out
 }
 #--------------------------------------------
-# 批量替换配置
+# 批量替换配置 sed 多个变量替换
+# replace_template_key_value config.file template.file out.file
 #--------------------------------------------
 function replace_template_key_value()
 {
@@ -251,7 +255,6 @@ function replace_template_key_value()
 # ${parameter-word} 若parameter变量未定义，则扩展为word。
 # ${parameter:-word} 若parameter变量未定义或为空，则扩展为word。
 #--------------------------------------------
-action=${1:-help}
 #if [ "$action" = 'init' ]; then
 #    if [ $# -lt 1 ]; then
 #        echo "Usage sh $0 init";
