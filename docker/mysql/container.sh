@@ -18,7 +18,7 @@ function run_mysql()
     args="$args -v $mysql_data_init_dir:/docker-entrypoint-initdb.d/"
 
     # config
-    args="$args -v $mysql_conf_dir:/etc/mysql/conf.d/"
+#    args="$args -v $mysql_conf_dir:/etc/mysql/conf.d/"
     # log
     args="$args -v $mysql_log_dir:/var/log/mysql/"
 
