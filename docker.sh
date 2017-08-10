@@ -118,6 +118,7 @@ function clean_runtime()
     run_cmd "rm -rf $project_docker_runtime_dir/crontab"
     run_cmd "rm -rf $project_docker_runtime_dir/nginx-fpm"
     run_cmd "rm -rf $project_docker_runtime_dir/php"
+    run_cmd "rm -rf $project_docker_runtime_dir/mysql"
     run_cmd "rm -rf $project_docker_runtime_dir/syslog-ng"
 }
 
