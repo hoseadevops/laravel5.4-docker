@@ -5,9 +5,11 @@
     docker 
 
 ##### run  
-    cd ~; mkdir -P git/app; cd git/app;
+    cd ~; mkdir git; cd git;
  
     git clone git@github.com:hoseadevops/laravel5.4.git
+    
+    cd laravel5.4
     
     git co docker
     
@@ -16,5 +18,7 @@
     sh docker.sh new_app
     
     enjoy it~
+    
+    sh docker.sh help
 
 
