@@ -31,13 +31,15 @@ read_buffer_size = 256K
 read_rnd_buffer_size = 512K
 myisam_sort_buffer_size = 8M
 bind_address=*
-lower_case_table_names=1
+sql-mode=""
 default-time-zone='+8:00'
 
+
+lower_case_table_names=1
 [mysqld_safe]
 log_error=/var/log/mysql/mysql_error.log
 
-log_slow_queries = /var/log/mysql/mysql-slow.log
+log_slow_queries        = /var/log/mysql/mysql-slow.log
 long_query_time = 2
 log-queries-not-using-indexes
 
