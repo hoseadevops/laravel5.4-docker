@@ -71,12 +71,14 @@ function init_app()
     run_cmd "echo php_fpm_port=9000 >> $project_docker_persistent_dir/config"
     run_cmd "echo dk_nginx_domain=hosea.devops.com >> $project_docker_persistent_dir/config"
     run_cmd "echo dk_nginx_root=$project_path/public >> $project_docker_persistent_dir/config"
+    run_cmd "echo open_basedir=$project_path:/tmp/:/proc/ >> $project_docker_persistent_dir/config"
 
     recursive_mkdir "$project_docker_persistent_dir/nginx-fpm-config"
     recursive_mkdir "$project_docker_persistent_dir/mysql/data"
 
     run_cmd "replace_template_key_value $project_docker_persistent_dir/config $project_docker_nginx_dir/nginx-fpm-config-template/fastcgi $project_docker_persistent_dir/nginx-fpm-config/fastcgi"
     run_cmd "replace_template_key_value $project_docker_persistent_dir/config $project_docker_nginx_dir/nginx-fpm-config-template/hosea.conf $project_docker_persistent_dir/nginx-fpm-config/hosea.conf"
+    run_cmd "replace_template_key_value $project_docker_persistent_dir/config $project_docker_php_dir/config-template/.user.ini $project_path/public"
 }
 
 function run()
