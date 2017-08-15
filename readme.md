@@ -3,7 +3,7 @@
     
 ##### dependent on
     docker 
-
+    https://hub.docker.com/u/hoseadevops/
 ##### run  
     cd ~; mkdir git; cd git;
  
